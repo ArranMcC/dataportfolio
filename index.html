@@ -36,12 +36,6 @@
             background-clip: text;
         }
 
-        .portfolio-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
         .projects-grid {
             max-width: 1400px;
             margin: 0 auto;
@@ -49,7 +43,7 @@
             gap: 40px;
         }
 
-        .project-card {
+        .project {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -60,7 +54,7 @@
             animation-fill-mode: both;
         }
 
-        .project-card:hover {
+        .project:hover {
             transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.2);
@@ -84,19 +78,19 @@
             overflow: hidden;
             border-radius: 8px;
             position: relative;
-            background: rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .carousel-track {
             display: flex;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s ease-in-out;
         }
 
         .carousel-slide {
             min-width: 100%;
             position: relative;
-            background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 100%);
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -114,13 +108,6 @@
 
         .carousel-slide img:hover {
             transform: scale(1.02);
-        }
-
-        .image-placeholder {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 40px;
         }
 
         .carousel-btn {
@@ -141,7 +128,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 1;
         }
 
         .carousel-btn:hover {
@@ -253,11 +239,11 @@
         }
 
         /* Animation delays for staggered effect */
-        .project-card:nth-child(1) { animation-delay: 0.1s; }
-        .project-card:nth-child(2) { animation-delay: 0.2s; }
-        .project-card:nth-child(3) { animation-delay: 0.3s; }
-        .project-card:nth-child(4) { animation-delay: 0.4s; }
-        .project-card:nth-child(5) { animation-delay: 0.5s; }
+        .project:nth-child(1) { animation-delay: 0.1s; }
+        .project:nth-child(2) { animation-delay: 0.2s; }
+        .project:nth-child(3) { animation-delay: 0.3s; }
+        .project:nth-child(4) { animation-delay: 0.4s; }
+        .project:nth-child(5) { animation-delay: 0.5s; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -269,7 +255,7 @@
                 margin-bottom: 40px;
             }
             
-            .project-card {
+            .project {
                 padding: 24px;
             }
             
@@ -371,8 +357,8 @@
                 projectSlides[projectIndex] = 0; // Initialize slide position
                 
                 const projectHTML = `
-                    <div class="project-card">
-                        <h2 class="project-title">${project.title}</h2>
+                    <div class="project">
+                        <h1 class="project-title">${project.title}</h1>
 
                         <div class="carousel-container">
                             <div class="carousel-wrapper">
@@ -384,8 +370,8 @@
                                     ${generateSlides(project, projectIndex)}
                                 </div>
                                 
-                                <button class="carousel-btn prev" onclick="moveSlide(${projectIndex}, -1)" aria-label="Previous image">❮</button>
-                                <button class="carousel-btn next" onclick="moveSlide(${projectIndex}, 1)" aria-label="Next image">❯</button>
+                                <button class="carousel-btn prev" onclick="moveSlide(${projectIndex}, -1)">❮</button>
+                                <button class="carousel-btn next" onclick="moveSlide(${projectIndex}, 1)">❯</button>
                             </div>
                             
                             <div class="carousel-indicators">
@@ -406,7 +392,7 @@
             for (let i = 1; i <= project.imageCount; i++) {
                 slidesHTML += `
                     <div class="carousel-slide">
-                        <img src="images/${project.imagePrefix}${i}.png" alt="${project.title} ${i}" onclick="openModal('images/${project.imagePrefix}${i}.png')" onerror="this.parentElement.innerHTML='<div class=&quot;image-placeholder&quot;>Image ${i} - Upload ${project.imagePrefix}${i}.png<br><small>Click to view full size once uploaded</small></div>'" 
+                        <img src="images/${project.imagePrefix}${i}.png" alt="${project.title} ${i}" onclick="openModal('images/${project.imagePrefix}${i}.png')"> 
                     </div>
                 `;
             }
@@ -420,7 +406,7 @@
             
             for (let i = 1; i <= imageCount; i++) {
                 const activeClass = i === 1 ? 'active' : '';
-                indicatorsHTML += `<span class="indicator ${activeClass}" onclick="currentSlide(${projectIndex}, ${i})" aria-label="Go to slide ${i}"></span>`;
+                indicatorsHTML += `<span class="indicator ${activeClass}" onclick="currentSlide(${projectIndex}, ${i})"></span>`;
             }
             
             return indicatorsHTML;
@@ -451,7 +437,7 @@
             track.style.transform = `translateX(${translateX}%)`;
             
             // Update indicators
-            const project = track.closest('.project-card');
+            const project = track.closest('.project');
             project.querySelectorAll('.indicator').forEach((indicator, index) => {
                 indicator.classList.toggle('active', index === projectSlides[projectIndex]);
             });
