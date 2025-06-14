@@ -451,13 +451,13 @@
             track.style.transform = `translateX(${translateX}%)`;
             
             // Update indicators
-            const projectCard = track.closest('.project-card');
-            projectCard.querySelectorAll('.indicator').forEach((indicator, index) => {
+            const project = track.closest('.project-card');
+            project.querySelectorAll('.indicator').forEach((indicator, index) => {
                 indicator.classList.toggle('active', index === projectSlides[projectIndex]);
             });
             
             // Update counter
-            projectCard.querySelector('.current-slide').textContent = projectSlides[projectIndex] + 1;
+            project.querySelector('.current-slide').textContent = projectSlides[projectIndex] + 1;
         }
 
         // Modal functions
